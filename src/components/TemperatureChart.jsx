@@ -2,33 +2,34 @@ import PropTypes from "prop-types";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { axisClasses } from "@mui/x-charts";
 
+const MEL_TZ = "Australia/Melbourne";
 const timescaleFormats = {
   minutely: {
     timeUnit: "minute",
     format: (d) => {
       const date = d instanceof Date ? d : new Date(d);
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: MEL_TZ });
     },
   },
   hourly: {
     timeUnit: "hour",
     format: (d) => {
       const date = d instanceof Date ? d : new Date(d);
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: MEL_TZ });
     },
   },
   daily: {
     timeUnit: "day",
     format: (d) => {
       const date = d instanceof Date ? d : new Date(d);
-      return date.toLocaleDateString();
+      return date.toLocaleDateString([], { timeZone: MEL_TZ });
     },
   },
   monthly: {
     timeUnit: "month",
     format: (d) => {
       const date = d instanceof Date ? d : new Date(d);
-      return date.toLocaleString([], { year: 'numeric', month: '2-digit' });
+      return date.toLocaleString([], { year: 'numeric', month: '2-digit', timeZone: MEL_TZ });
     },
   },
 };
@@ -98,10 +99,7 @@ function TemperatureChart({ data, timescale }) {
       xAxis={[
         {
           data: xData,
-          valueFormatter: (d, idx) =>
-            timescale === 'hourly'
-              ? format(d, idx, xData)
-              : format(d),
+          valueFormatter: (d) => format(d),
           label: "Time",
         },
       ]}
